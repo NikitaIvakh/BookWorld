@@ -41,5 +41,17 @@ public static class Errors
             var label = message is null ? string.Empty : $"{message}";
             return new Error("invalid.length", $"{label} is invalid length");
         }
+
+        public static Error InvalidValue(string? message = null)
+        {
+            var label = message is null ? string.Empty : $"{message}";
+            return new Error("invalid.value", $"{label} is invalid");
+        }
+
+        public static Error InvalidDiscountAmount(string? message = null)
+        {
+            var label = message is null ? string.Empty : $"{message}";
+            return new Error("discountAmount.is.invalid", $"{label} is lower then minAmount");
+        }
     }
 }

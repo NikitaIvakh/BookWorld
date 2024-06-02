@@ -1,4 +1,6 @@
-﻿using Coupons.Domain.Primitives;
+﻿using Coupons.Domain.Common;
+using CSharpFunctionalExtensions;
+using ValueObject = Coupons.Domain.Primitives.ValueObject;
 
 namespace Coupons.Domain.ValueObjects;
 
@@ -10,6 +12,14 @@ public sealed class CouponCode : ValueObject
     }
 
     public string Value { get; }
+
+    public Result<CouponCode, Error> Create(string value)
+    {
+        if (value.IsEmpty() || value.Length is > Constraints.MAXIMUM_LENGTH or < Constraints.MINIMUM_LENGTH)
+            return Errors.General.InvalidLength(nameof(value.Length));
+
+        return new CouponCode(value);
+    }
 
     public override IEnumerable<object> GetAtomicValues()
     {
