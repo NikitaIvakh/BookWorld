@@ -12,13 +12,13 @@ public sealed class Coupon : Entity
     {
     }
 
-    public string CouponCode { get; set; } = string.Empty;
+    public string CouponCode { get; private set; } = string.Empty;
 
-    public string DiscountAmount { get; set; } = string.Empty;
+    public decimal DiscountAmount { get; private set; }
 
-    public string MinAmount { get; set; } = string.Empty;
+    public decimal MinAmount { get; private set; }
 
-    public DateTime CreatedDate { get; set; }
+    public DateTime CreatedDate { get; private set; }
 
-    public DateTime CouponValidityPeriod { get; set; }
+    public DateTime CouponValidityPeriod { get; private set; }
 }
