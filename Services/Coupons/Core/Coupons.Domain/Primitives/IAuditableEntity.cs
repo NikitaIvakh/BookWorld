@@ -4,5 +4,5 @@ public interface IAuditableEntity
 {
     public DateTime CreatedDate { get; set; }
 
-   public DateTime CouponValidityPeriod { get; set; }
+    public DateTime CouponValidityPeriod { get; set; }
 }
