@@ -1,6 +1,5 @@
-﻿using Coupons.Domain.Common;
-using Coupons.Domain.Primitives;
-using CSharpFunctionalExtensions;
+﻿using Coupons.Domain.Primitives;
+using Coupons.Domain.ValueObjects;
 using Entity = Coupons.Domain.Primitives.Entity;
 
 namespace Coupons.Domain.Entities;
@@ -11,14 +10,14 @@ public sealed class Coupon : Entity, IAuditableEntity
     {
     }
 
-    private Coupon(Guid id, string couponCode, decimal discountAmount, decimal minAmount) : base(id)
+    private Coupon(Guid id, CouponCode couponCode, decimal discountAmount, decimal minAmount) : base(id)
     {
         CouponCode = couponCode;
         DiscountAmount = discountAmount;
         MinAmount = minAmount;
     }
 
-    public string CouponCode { get; private set; } = string.Empty;
+    public CouponCode CouponCode { get; private set; }
 
     public decimal DiscountAmount { get; }
 
@@ -27,12 +26,4 @@ public sealed class Coupon : Entity, IAuditableEntity
     public DateTime CreatedDate { get; set; }
 
     public DateTime CouponValidityPeriod { get; set; }
-
-    public Result<Coupon, Error> Create(Guid id, string couponCode, decimal discountAmount, decimal minAmount)
-    {
-        if (couponCode.IsEmpty())
-            return Errors.General.InvalidLength(nameof(couponCode.Length));
-
-        return new Coupon(id, couponCode, discountAmount, minAmount);
-    }
 }
