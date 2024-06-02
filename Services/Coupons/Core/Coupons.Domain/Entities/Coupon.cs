@@ -1,8 +1,16 @@
-﻿namespace Coupons.Domain.Entities;
+﻿using Coupons.Domain.Primitives;
 
-public sealed class Coupon
+namespace Coupons.Domain.Entities;
+
+public sealed class Coupon : Entity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    private Coupon()
+    {
+    }
+
+    private Coupon(Guid id) : base(id)
+    {
+    }
 
     public string CouponCode { get; set; } = string.Empty;
 
