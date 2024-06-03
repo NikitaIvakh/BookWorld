@@ -1,7 +1,7 @@
 ﻿using Coupons.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coupons.Application.DbContexts;
+namespace Coupons.Application.Abstractors.DbContexts;
 
 public interface ICouponDbContext
 {

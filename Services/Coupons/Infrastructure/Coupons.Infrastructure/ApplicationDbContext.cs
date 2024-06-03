@@ -1,4 +1,4 @@
-﻿using Coupons.Application.DbContexts;
+﻿using Coupons.Application.Abstractors.DbContexts;
 using Coupons.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
