@@ -16,7 +16,7 @@ public sealed class CouponCode : ValueObject
     public ResultT<CouponCode> Create(string value)
     {
         if (value.IsEmpty() || value.Length is > Constraints.MAXIMUM_LENGTH or < Constraints.MINIMUM_LENGTH)
-            return Result.Failure<CouponCode>(DomainErrors.Coupon.InvalidLength(nameof(value.Length)));
+            return Result.Failure<CouponCode>(DomainErrors.Coupon.InvalidLength(value, value.Length));
 
         var couponCode = new CouponCode(value);
         return Result.Create(couponCode);
