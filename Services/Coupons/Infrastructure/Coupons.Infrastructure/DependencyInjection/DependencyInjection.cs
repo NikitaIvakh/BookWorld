@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Coupons.Application.Abstractors.Interfaces;
+using Coupons.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +17,7 @@ public static class DependencyInjection
 
     private static void ConfigureRepositories(IServiceCollection services)
     {
-
+        services.AddScoped<ICouponRepository, CouponRepository>();
     }
 
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
