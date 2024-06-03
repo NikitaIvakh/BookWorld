@@ -1,8 +1,7 @@
 ﻿using Coupons.Domain.Common;
 using Coupons.Domain.Primitives;
+using Coupons.Domain.Shared;
 using Coupons.Domain.ValueObjects;
-using CSharpFunctionalExtensions;
-using Entity = Coupons.Domain.Primitives.Entity;
 
 namespace Coupons.Domain.Entities;
 
@@ -30,17 +29,18 @@ public sealed class Coupon : Entity, IAuditableEntity
 
     public DateTime CouponValidityPeriod { get; private set; }
 
-    public Result<Coupon, DomainErrors> Create(Guid id, CouponCode couponCode, decimal discountAmount, decimal minAmount, DateTime couponValidityPeriod)
+    public ResultT<Coupon> Create(Guid id, CouponCode couponCode, decimal discountAmount, decimal minAmount, DateTime couponValidityPeriod)
     {
         if (discountAmount is > Constraints.MAX_VALUE or < Constraints.MIN_VALUE)
-            return Errors.General.InvalidValue(nameof(discountAmount));
+            return Result.Failure<Coupon>(DomainErrors.Coupon.InvalidValue(nameof(discountAmount)));
 
         if (minAmount is > Constraints.MAX_VALUE or < Constraints.MIN_VALUE)
-            return Errors.General.InvalidValue(nameof(minAmount));
+            return Result.Failure<Coupon>(DomainErrors.Coupon.InvalidValue(nameof(minAmount)));
 
         if (minAmount > discountAmount)
-            return Errors.General.InvalidDiscountAmount(nameof(discountAmount));
+            return Result.Failure<Coupon>(DomainErrors.Coupon.InvalidDiscountAmount(nameof(discountAmount)));
 
-        return new Coupon(id, couponCode, discountAmount, minAmount, couponValidityPeriod);
+        var coupon = new Coupon(id, couponCode, discountAmount, minAmount, couponValidityPeriod);
+        return Result.Create(coupon);
     }
 }
