@@ -30,7 +30,7 @@ public sealed class Coupon : Entity, IAuditableEntity
 
     public DateTime CouponValidityPeriod { get; private set; }
 
-    public Result<Coupon, Error> Create(Guid id, CouponCode couponCode, decimal discountAmount, decimal minAmount, DateTime couponValidityPeriod)
+    public Result<Coupon, DomainErrors> Create(Guid id, CouponCode couponCode, decimal discountAmount, decimal minAmount, DateTime couponValidityPeriod)
     {
         if (discountAmount is > Constraints.MAX_VALUE or < Constraints.MIN_VALUE)
             return Errors.General.InvalidValue(nameof(discountAmount));

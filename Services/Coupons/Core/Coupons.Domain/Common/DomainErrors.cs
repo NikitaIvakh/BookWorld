@@ -1,8 +1,8 @@
 ﻿namespace Coupons.Domain.Common;
 
-public sealed class Error
+public sealed class DomainErrors
 {
-    internal Error(string code, string message)
+    internal DomainErrors(string code, string message)
     {
         Code = code;
         Message = message;
@@ -19,7 +19,7 @@ public sealed class Error
         return Code + Separator + Message;
     }
 
-    public static Error Deserialize(string serialized)
+    public static DomainErrors Deserialize(string serialized)
     {
         var value = serialized.Split([Separator], StringSplitOptions.RemoveEmptyEntries);
 
@@ -28,7 +28,7 @@ public sealed class Error
             throw new ArgumentException($"Invalid.error.serialization: '{serialized}'");
         }
 
-        return new Error(value[0], value[1]);
+        return new DomainErrors(value[0], value[1]);
     }
 }
 
@@ -36,22 +36,22 @@ public static class Errors
 {
     public static class General
     {
-        public static Error InvalidLength(string? message = null)
+        public static DomainErrors InvalidLength(string? message = null)
         {
             var label = message is null ? string.Empty : $"{message}";
-            return new Error("invalid.length", $"{label} is invalid length");
+            return new DomainErrors("invalid.length", $"{label} is invalid length");
         }
 
-        public static Error InvalidValue(string? message = null)
+        public static DomainErrors InvalidValue(string? message = null)
         {
             var label = message is null ? string.Empty : $"{message}";
-            return new Error("invalid.value", $"{label} is invalid");
+            return new DomainErrors("invalid.value", $"{label} is invalid");
         }
 
-        public static Error InvalidDiscountAmount(string? message = null)
+        public static DomainErrors InvalidDiscountAmount(string? message = null)
         {
             var label = message is null ? string.Empty : $"{message}";
-            return new Error("discountAmount.is.invalid", $"{label} is lower then minAmount");
+            return new DomainErrors("discountAmount.is.invalid", $"{label} is lower then minAmount");
         }
     }
 }
