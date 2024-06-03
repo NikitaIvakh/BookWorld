@@ -2,7 +2,7 @@
 
 public sealed class Error(string code, string message) : IEquatable<Error>
 {
-    public static readonly Error Null = new("string.is.empty", "string.is.empty");
+    public static readonly Error None = new("string.is.empty", "string.is.empty");
     public static readonly Error NullValue = new("DomainErrors.NullValue", "The specified result value is null");
 
     public string Code { get; } = code;
