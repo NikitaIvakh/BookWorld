@@ -19,6 +19,7 @@ public static class DependencyInjection
 
     private static void ConfigureRepositories(IServiceCollection services)
     {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ICouponRepository, CouponRepository>();
     }
 

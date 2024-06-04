@@ -19,8 +19,6 @@ public sealed class CouponRepository(ApplicationDbContext context) : ICouponRepo
         }
 
         await context.AddAsync(coupon, token);
-        await context.SaveChangesAsync(token);
-
         return await Task.FromResult(coupon);
     }
 
@@ -32,8 +30,6 @@ public sealed class CouponRepository(ApplicationDbContext context) : ICouponRepo
         }
 
         context.Remove(coupon);
-        await context.SaveChangesAsync(token);
-
         return await Task.FromResult(coupon);
     }
 }

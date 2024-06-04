@@ -6,7 +6,7 @@ using Coupons.Domain.ValueObjects;
 
 namespace Coupons.Application.Coupons.Commands;
 
-public class CreateCouponCommandHandler(ICouponRepository couponRepository) : ICommandHandler<CreateCouponCommand, Guid>
+public class CreateCouponCommandHandler(ICouponRepository couponRepository, IUnitOfWork unitOfWork) : ICommandHandler<CreateCouponCommand, Guid>
 {
     public async Task<ResultT<Guid>> Handle(CreateCouponCommand request, CancellationToken cancellationToken)
     {
@@ -20,6 +20,8 @@ public class CreateCouponCommandHandler(ICouponRepository couponRepository) : IC
             request.CouponValidityPeriod).Value;
 
         await couponRepository.CreateCoupon(coupon, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
         return Result.Success(coupon.Id);
     }
 }
