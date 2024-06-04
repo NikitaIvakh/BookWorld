@@ -1,4 +1,5 @@
 ﻿using Coupons.Application.Abstractors.Interfaces;
+using Coupons.Infrastructure.Interceptors;
 using Coupons.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ public static class DependencyInjection
     public static void ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         ConfigureRepositories(services);
+        AddInterceptors(services);
         ConfigureDatabase(services, configuration);
         ApplyMigrations(services);
     }
@@ -20,11 +22,17 @@ public static class DependencyInjection
         services.AddScoped<ICouponRepository, CouponRepository>();
     }
 
+    private static void AddInterceptors(IServiceCollection services)
+    {
+        services.AddScoped<CouponAddCreateDateInterceptor>();
+    }
+
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationDbContext>(options =>
+        services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+            var couponCreateDateInterceptor = sp.GetService<CouponAddCreateDateInterceptor>();
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")).AddInterceptors(couponCreateDateInterceptor!);
         });
     }
 
