@@ -37,7 +37,7 @@ public sealed class Coupon : Entity, IAuditableEntity
         if (minAmount is > Constraints.MAX_VALUE or < Constraints.MIN_VALUE)
             return Result.Failure<Coupon>(DomainErrors.Coupon.InvalidValue(nameof(minAmount)));
 
-        if (minAmount > discountAmount)
+        if (discountAmount > minAmount)
             return Result.Failure<Coupon>(DomainErrors.Coupon.InvalidDiscountAmount(nameof(discountAmount)));
 
         var coupon = new Coupon(id, couponCode, discountAmount, minAmount, couponValidityPeriod);

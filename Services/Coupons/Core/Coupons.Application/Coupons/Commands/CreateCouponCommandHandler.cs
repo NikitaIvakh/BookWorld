@@ -10,18 +10,24 @@ public class CreateCouponCommandHandler(ICouponRepository couponRepository, IUni
 {
     public async Task<ResultT<Guid>> Handle(CreateCouponCommand request, CancellationToken cancellationToken)
     {
-        var couponCode = CouponCode.Create(request.CouponCode).Value;
+        var couponCode = CouponCode.Create(request.CouponCode);
+
+        if (couponCode.IsFailure)
+            return Result.Failure<Guid>(couponCode.Error);
 
         var coupon = Coupon.Create(
             Guid.NewGuid(),
-            couponCode,
+            couponCode.Value,
             request.DiscountAmount,
             request.MinAmount,
-            request.CouponValidityPeriod).Value;
+            request.CouponValidityPeriod);
 
-        await couponRepository.CreateCoupon(coupon, cancellationToken);
+        if (coupon.IsFailure)
+            return Result.Failure<Guid>(coupon.Error);
+
+        await couponRepository.CreateCoupon(coupon.Value, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(coupon.Id);
+        return Result.Success(coupon.Value.Id);
     }
 }

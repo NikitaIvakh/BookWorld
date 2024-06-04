@@ -13,6 +13,6 @@ public static class DomainErrors
             new Error("value.is.invalid", $"{value} is invalid");
 
         public static readonly Func<string, Error> InvalidDiscountAmount =
-            value => new Error("discountAmount.is.invalid", $"{value} is lower then MinAmount");
+            value => new Error("discountAmount.is.invalid", $"{value} is lower then DiscountAmount");
     }
 }
