@@ -13,7 +13,7 @@ public sealed class CouponCode : ValueObject
 
     public string Value { get; }
 
-    public ResultT<CouponCode> Create(string value)
+    public static ResultT<CouponCode> Create(string value)
     {
         if (value.IsEmpty() || value.Length is > Constraints.MAXIMUM_LENGTH or < Constraints.MINIMUM_LENGTH)
             return Result.Failure<CouponCode>(DomainErrors.Coupon.InvalidLength(nameof(value), value.Length));
