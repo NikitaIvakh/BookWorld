@@ -11,7 +11,12 @@ public class CreateCouponCommandHandler(ICouponRepository couponRepository) : IC
     public async Task<ResultT<Guid>> Handle(CreateCouponCommand request, CancellationToken cancellationToken)
     {
         var couponCode = CouponCode.Create(request.CouponCode).Value;
-        var coupon = Coupon.Create(Guid.NewGuid(), couponCode, request.DiscountAmount, request.MinAmount,
+
+        var coupon = Coupon.Create(
+            Guid.NewGuid(),
+            couponCode,
+            request.DiscountAmount,
+            request.MinAmount,
             request.CouponValidityPeriod).Value;
 
         await couponRepository.CreateCoupon(coupon, cancellationToken);
