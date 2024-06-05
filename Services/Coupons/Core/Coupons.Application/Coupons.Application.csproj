@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Coupons\Queries\" />
+    <Folder Include="Coupons\Queries\GetById\" />
   </ItemGroup>
 
 </Project>

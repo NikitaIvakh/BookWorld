@@ -20,5 +20,8 @@ public static class DomainErrors
 
         public static readonly Func<string, Error> InvalidDateTime =
             value => new Error("datetime.is.invalid", $"{value} is invalid");
+
+        public static readonly Func<Guid, Error> NotFound =
+            value => new Error("record.not.found", $"{value} not found");
     }
 }
