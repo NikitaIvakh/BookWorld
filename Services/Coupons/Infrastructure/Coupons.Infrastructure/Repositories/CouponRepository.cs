@@ -6,9 +6,9 @@ namespace Coupons.Infrastructure.Repositories;
 
 public sealed class CouponRepository(ApplicationDbContext context) : ICouponRepository
 {
-    public IQueryable<Coupon> GetCoupons()
+    public async Task<Coupon?> GetCouponAsync(Guid id, CancellationToken token)
     {
-        return context.Coupons.AsNoTracking().AsQueryable();
+        return await context.Coupons.FirstOrDefaultAsync(key => key.Id == id, token);
     }
 
     public async Task<bool> IsUniqueCouponCode(string couponCode, CancellationToken token = default)

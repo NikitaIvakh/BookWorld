@@ -4,7 +4,7 @@ namespace Coupons.Application.Abstractors.Interfaces;
 
 public interface ICouponRepository
 {
-    IQueryable<Coupon> GetCoupons();
+    Task<Coupon?> GetCouponAsync(Guid id, CancellationToken token);
 
     Task<bool> IsUniqueCouponCode(string couponCode, CancellationToken token = default);
 

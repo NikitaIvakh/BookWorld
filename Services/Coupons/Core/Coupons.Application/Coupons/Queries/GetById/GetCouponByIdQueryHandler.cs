@@ -11,7 +11,7 @@ public sealed class GetCouponByIdQueryHandler(ICouponRepository couponRepository
 {
     public async Task<ResultT<GetCouponByIdResponse>> Handle(GetCouponByIdQuery request, CancellationToken cancellationToken)
     {
-        var coupon = await couponRepository.GetCoupons().FirstOrDefaultAsync(key => key.Id == request.Id, cancellationToken);
+        var coupon = await couponRepository.GetCouponAsync(request.Id, cancellationToken);
 
         if (coupon is null)
             return Result.Failure<GetCouponByIdResponse>(DomainErrors.Coupon.NotFound(request.Id));
