@@ -7,7 +7,7 @@ using Moq;
 
 namespace Coupons.ApplicationTests.Commands;
 
-public class CreateCouponCommandHandlerTests
+public sealed class CreateCouponCommandHandlerTests
 {
     private readonly Mock<ICouponRepository> _couponRepositoryMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
