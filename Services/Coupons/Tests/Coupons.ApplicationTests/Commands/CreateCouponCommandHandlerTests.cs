@@ -18,8 +18,9 @@ public class CreateCouponCommandHandlerTests
         // Arrange
         const string code = "50FF";
         var couponCode = CouponCode.Create(code).Value;
-        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(true);
         var command = new CreateCouponCommand(couponCode.Value, 20m, 45m, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
 
         // Act
         var result = await handler.Handle(command, default);
@@ -36,8 +37,9 @@ public class CreateCouponCommandHandlerTests
         // Arrange
         const string code = "50FF";
         var couponCode = CouponCode.Create(code).Value;
-        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(true);
         var command = new CreateCouponCommand(couponCode.Value, 20m, 45m, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
 
         // Act
         await handler.Handle(command, default);
@@ -52,8 +54,9 @@ public class CreateCouponCommandHandlerTests
         // Arrange
         const string code = "50FF";
         var couponCode = CouponCode.Create(code).Value;
-        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(true);
         var command = new CreateCouponCommand(couponCode.Value, 20m, 45m, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
 
         // Act
         await handler.Handle(command, default);
@@ -68,8 +71,9 @@ public class CreateCouponCommandHandlerTests
         // Arrange
         const string code = "50FF";
         var couponCode = CouponCode.Create(code).Value;
-        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(true);
         var command = new CreateCouponCommand(couponCode.Value, 220m, 45m, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
 
         // Act
         var result = await handler.Handle(command, default);
@@ -85,8 +89,9 @@ public class CreateCouponCommandHandlerTests
         // Arrange
         const string code = "50FF";
         var couponCode = CouponCode.Create(code).Value;
-        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(true);
         var command = new CreateCouponCommand(couponCode.Value, 220m, 45m, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
 
         // Act
         await handler.Handle(command, default);
@@ -101,8 +106,79 @@ public class CreateCouponCommandHandlerTests
         // Arrange
         const string code = "50FF";
         var couponCode = CouponCode.Create(code).Value;
-        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(true);
         var command = new CreateCouponCommand(couponCode.Value, 220m, 45m, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+
+        // Act
+        await handler.Handle(command, default);
+
+        // Assert
+        _unitOfWorkMock.Verify(key => key.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task Handle_Should_ReturnSuccessForUniqueCouponCode()
+    {
+        // Arrange
+        const string code = "50FF";
+        var couponCode = CouponCode.Create(code).Value;
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(true);
+        var command = new CreateCouponCommand(couponCode.Value, 20, 50, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+
+        // Act
+        var result = await handler.Handle(command, default);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.IsFailure.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task Handle_Should_ReturnFailureForUniqueCouponCode()
+    {
+        // Arrange
+        const string code = "5OFF";
+        var couponCode = CouponCode.Create(code).Value;
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(false);
+        var command = new CreateCouponCommand(couponCode.Value, 20, 70, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+
+        // Act
+        var result = await handler.Handle(command, default);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.IsSuccess.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task Handle_Should_NotCallCreateMethodWithNotUniqueCouponCode()
+    {
+        // Arrange
+        const string code = "5OFF";
+        var couponCode = CouponCode.Create(code).Value;
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(false);
+        var command = new CreateCouponCommand(couponCode.Value, 20, 70, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
+
+        // Act
+        await handler.Handle(command, default);
+
+        // Assert
+        _couponRepositoryMock.Verify(key => key.CreateCoupon(It.IsAny<Coupon>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task Handle_Should_NotCallSaveChangesAsyncWithNotUniqueCouponCode()
+    {
+        // Arrange
+        const string code = "45OFF";
+        var couponCode = CouponCode.Create(code).Value;
+        _couponRepositoryMock.Setup(key => key.IsUniqueCouponCode(It.IsAny<string>())).ReturnsAsync(false);
+        var command = new CreateCouponCommand(couponCode.Value, 20, 89, DateTime.UtcNow);
+        var handler = new CreateCouponCommandHandler(_couponRepositoryMock.Object, _unitOfWorkMock.Object);
 
         // Act
         await handler.Handle(command, default);

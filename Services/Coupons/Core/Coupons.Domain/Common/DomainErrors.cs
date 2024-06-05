@@ -14,5 +14,8 @@ public static class DomainErrors
 
         public static readonly Func<string, Error> InvalidDiscountAmount =
             value => new Error("discountAmount.is.invalid", $"{value} is lower then DiscountAmount");
+
+        public static readonly Func<string, Error> AlreadyExists = value =>
+            new Error("already.exists", $"{value} is already exists");
     }
 }

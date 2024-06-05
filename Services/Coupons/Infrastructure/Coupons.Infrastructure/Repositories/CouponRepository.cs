@@ -11,9 +11,9 @@ public sealed class CouponRepository(ApplicationDbContext context) : ICouponRepo
         return context.Coupons.AsNoTracking().AsQueryable();
     }
 
-    public async Task<bool> IsUniqueCouponCode(Coupon coupon)
+    public async Task<bool> IsUniqueCouponCode(string couponCode)
     {
-        return await Task.FromResult(context.Coupons.Any(key => key.CouponCode.Value == coupon.CouponCode.Value));
+        return await context.Coupons.AnyAsync(key => key.CouponCode.Value == couponCode);
     }
 
     public async Task<Coupon> CreateCoupon(Coupon coupon, CancellationToken token = default)
