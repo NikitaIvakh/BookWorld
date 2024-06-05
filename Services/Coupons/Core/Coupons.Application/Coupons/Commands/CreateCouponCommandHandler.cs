@@ -14,7 +14,7 @@ public class CreateCouponCommandHandler(ICouponRepository couponRepository, IUni
         var couponCode = CouponCode.Create(request.CouponCode);
 
         if (couponCode.IsFailure)
-            return Result.Failure<Guid>(DomainErrors.Coupon.InvalidValue(nameof(couponCode)));
+            return Result.Failure<Guid>(couponCode.Error);
 
         var uniqueCouponCode = await couponRepository.IsUniqueCouponCode(couponCode.Value.Value, cancellationToken);
 
