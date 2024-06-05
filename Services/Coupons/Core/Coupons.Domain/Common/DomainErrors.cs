@@ -13,9 +13,12 @@ public static class DomainErrors
             new Error("value.is.invalid", $"{value} is invalid");
 
         public static readonly Func<string, Error> InvalidDiscountAmount =
-            value => new Error("discountAmount.is.invalid", $"{value} is lower then DiscountAmount");
+            value => new Error("discountAmount.is.invalid", $"{value} is higher then MinAmount");
 
         public static readonly Func<string, Error> AlreadyExists = value =>
             new Error("already.exists", $"{value} is already exists");
+
+        public static readonly Func<string, Error> InvalidDateTime =
+            value => new Error("datetime.is.invalid", $"{value} is invalid");
     }
 }

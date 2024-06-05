@@ -16,10 +16,10 @@ public class CreateCouponCommandHandler(ICouponRepository couponRepository, IUni
         if (couponCode.IsFailure)
             return Result.Failure<Guid>(DomainErrors.Coupon.InvalidValue(nameof(couponCode)));
 
-        if (!await couponRepository.IsUniqueCouponCode(couponCode.Value.Value))
-        {
+        var uniqueCouponCode = await couponRepository.IsUniqueCouponCode(couponCode.Value.Value, cancellationToken);
+
+        if (!uniqueCouponCode)
             return Result.Failure<Guid>(DomainErrors.Coupon.AlreadyExists(nameof(couponCode)));
-        }
 
         var coupon = Coupon.Create(
             Guid.NewGuid(),

@@ -40,6 +40,9 @@ public sealed class Coupon : Entity, IAuditableEntity
         if (discountAmount > minAmount)
             return Result.Failure<Coupon>(DomainErrors.Coupon.InvalidDiscountAmount(nameof(discountAmount)));
 
+        if (couponValidityPeriod <= DateTime.UtcNow)
+            return Result.Failure<Coupon>(DomainErrors.Coupon.InvalidDateTime(nameof(couponValidityPeriod)));
+
         var coupon = new Coupon(id, couponCode, discountAmount, minAmount, couponValidityPeriod);
         return Result.Create(coupon);
     }

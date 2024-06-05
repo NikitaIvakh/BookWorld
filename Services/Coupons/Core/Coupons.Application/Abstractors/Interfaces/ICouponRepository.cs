@@ -6,7 +6,7 @@ public interface ICouponRepository
 {
     IQueryable<Coupon> GetCoupons();
 
-    Task<bool> IsUniqueCouponCode(string couponCode);
+    Task<bool> IsUniqueCouponCode(string couponCode, CancellationToken token = default);
 
     Task<Coupon> CreateCoupon(Coupon coupon, CancellationToken token = default);
 
