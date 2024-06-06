@@ -12,7 +12,7 @@ public class GetCouponsQueryHandler(ICouponRepository couponRepository)
     {
         var coupons = await couponRepository.GetCouponsAsync(cancellationToken);
 
-        if (!coupons.Any())
+        if (coupons is null)
             return Result.Failure<IEnumerable<GetCouponsResponse>>(DomainErrors.Coupon.CollectionNotFound(nameof(coupons)));
 
         var couponsResponse = coupons.Select(key => new GetCouponsResponse
