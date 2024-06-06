@@ -23,5 +23,8 @@ public static class DomainErrors
 
         public static readonly Func<Guid, Error> NotFound =
             value => new Error("record.not.found", $"{value} not found");
+
+        public static readonly Func<string, Error> CollectionNotFound = value =>
+            new Error("collection.not.found", $"{value} not found");
     }
 }
