@@ -1,4 +1,5 @@
 ﻿using Coupons.Application.Coupons.Commands.Create;
+using Coupons.Application.Coupons.Commands.Delete;
 using Coupons.Application.Coupons.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -34,8 +35,12 @@ public sealed class CouponController(ISender sender) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : BadRequest($"{result.Error.Code}: {result.Error.Message}");
     }
 
-    [HttpDelete("{id}")]
-    public void Delete(int id)
+    [HttpDelete("DeleteCoupon/{id:guid}")]
+    public async Task<IActionResult> DeleteCoupon(Guid id, CancellationToken token)
     {
+        var coupon = new DeleteCouponCommand(id);
+        var result = await sender.Send(coupon, token);
+
+        return result.IsSuccess ? Ok(result.Value) : BadRequest($"{result.Error.Code}: {result.Error.Message}");
     }
 }
