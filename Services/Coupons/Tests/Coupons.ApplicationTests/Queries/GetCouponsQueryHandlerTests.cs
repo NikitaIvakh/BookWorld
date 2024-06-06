@@ -7,7 +7,7 @@ using Moq;
 
 namespace Coupons.ApplicationTests.Queries;
 
-public class GetCouponsQueryHandlerTests
+public sealed class GetCouponsQueryHandlerTests
 {
     private readonly Mock<ICouponRepository> _couponRepository = new();
 
