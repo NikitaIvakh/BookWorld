@@ -6,6 +6,11 @@ namespace Coupons.Infrastructure.Repositories;
 
 public sealed class CouponRepository(ApplicationDbContext context) : ICouponRepository
 {
+    public async Task<IEnumerable<Coupon>> GetCouponsAsync(CancellationToken token = default)
+    {
+        return await context.Coupons.AsNoTracking().ToListAsync(token);
+    }
+
     public async Task<Coupon?> GetCouponAsync(Guid id, CancellationToken token)
     {
         return await context.Coupons.FirstOrDefaultAsync(key => key.Id == id, token);
