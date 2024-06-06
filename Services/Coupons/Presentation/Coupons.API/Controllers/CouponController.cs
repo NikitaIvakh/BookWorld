@@ -1,4 +1,4 @@
-﻿using Coupons.Application.Coupons.Commands;
+﻿using Coupons.Application.Coupons.Commands.Create;
 using Coupons.Application.Coupons.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

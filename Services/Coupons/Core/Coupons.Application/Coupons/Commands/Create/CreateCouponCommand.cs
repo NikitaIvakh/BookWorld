@@ -1,6 +1,6 @@
 ﻿using Coupons.Application.Abstractors.Messages.Handlers;
 
-namespace Coupons.Application.Coupons.Commands;
+namespace Coupons.Application.Coupons.Commands.Create;
 
 public sealed record CreateCouponCommand
 (

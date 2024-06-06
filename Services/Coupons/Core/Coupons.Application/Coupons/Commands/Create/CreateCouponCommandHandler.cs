@@ -5,7 +5,7 @@ using Coupons.Domain.Entities;
 using Coupons.Domain.Shared;
 using Coupons.Domain.ValueObjects;
 
-namespace Coupons.Application.Coupons.Commands;
+namespace Coupons.Application.Coupons.Commands.Create;
 
 public class CreateCouponCommandHandler(ICouponRepository couponRepository, IUnitOfWork unitOfWork) : ICommandHandler<CreateCouponCommand, Guid>
 {

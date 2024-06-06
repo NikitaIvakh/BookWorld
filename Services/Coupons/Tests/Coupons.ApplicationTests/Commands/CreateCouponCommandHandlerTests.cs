@@ -1,5 +1,5 @@
 ﻿using Coupons.Application.Abstractors.Interfaces;
-using Coupons.Application.Coupons.Commands;
+using Coupons.Application.Coupons.Commands.Create;
 using Coupons.Domain.Entities;
 using Coupons.Domain.ValueObjects;
 using FluentAssertions;
