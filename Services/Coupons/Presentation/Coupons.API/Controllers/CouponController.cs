@@ -1,6 +1,7 @@
 ﻿using Coupons.Application.Coupons.Commands.Create;
 using Coupons.Application.Coupons.Commands.Delete;
 using Coupons.Application.Coupons.Queries.GetById;
+using Coupons.Application.Coupons.Queries.GetCoupons;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,13 @@ namespace Coupons.API.Controllers;
 [Route("api/[controller]")]
 public sealed class CouponController(ISender sender) : ControllerBase
 {
-    [HttpGet]
-    public IEnumerable<string> Get()
+    [HttpGet(nameof(GetCoupons))]
+    public async Task<IActionResult> GetCoupons(CancellationToken token)
     {
-        return new string[] { "value1", "value2" };
+        var coupons = new GetCouponsQuery();
+        var result = await sender.Send(coupons, token);
+
+        return result.IsSuccess ? Ok(result) : BadRequest($"{result.Error.Code}: {result.Error.Message}");
     }
 
     [HttpGet("GetCoupon/{id:guid}")]
@@ -25,7 +29,7 @@ public sealed class CouponController(ISender sender) : ControllerBase
         return result.IsSuccess ? Ok(result) : BadRequest($"{result.Error.Code}: {result.Error.Message}");
     }
 
-    [HttpPost("CreateCoupon")]
+    [HttpPost(nameof(CreateCoupon))]
     public async Task<IActionResult> CreateCoupon([FromQuery] CreateCouponCommand couponCommand, CancellationToken token)
     {
         var command = new CreateCouponCommand(couponCommand.CouponCode, couponCommand.DiscountAmount,
