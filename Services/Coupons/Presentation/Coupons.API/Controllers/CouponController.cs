@@ -1,4 +1,5 @@
 ﻿using Coupons.Application.Coupons.Commands;
+using Coupons.Application.Coupons.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +15,13 @@ public sealed class CouponController(ISender sender) : ControllerBase
         return new string[] { "value1", "value2" };
     }
 
-    [HttpGet("{id}")]
-    public string Get(int id)
+    [HttpGet("GetCoupon/{id:guid}")]
+    public async Task<IActionResult> GetCoupon(Guid id, CancellationToken token)
     {
-        return "value";
+        var coupon = new GetCouponByIdQuery(id);
+        var result = await sender.Send(coupon, token);
+
+        return result.IsSuccess ? Ok(result) : BadRequest($"{result.Error.Code}: {result.Error.Message}");
     }
 
     [HttpPost("CreateCoupon")]
