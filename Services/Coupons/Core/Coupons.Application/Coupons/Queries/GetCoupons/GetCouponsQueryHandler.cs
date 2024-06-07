@@ -1,5 +1,6 @@
 ﻿using Coupons.Application.Abstractors.Interfaces;
 using Coupons.Application.Abstractors.Messages.Queries;
+using Coupons.Domain.Common;
 using Coupons.Domain.Shared;
 
 namespace Coupons.Application.Coupons.Queries.GetCoupons;
@@ -10,6 +11,9 @@ public class GetCouponsQueryHandler(ICouponRepository couponRepository)
     public async Task<ResultT<PaginationList<GetCouponsResponse>>> Handle(GetCouponsQuery request, CancellationToken cancellationToken)
     {
         var coupons = await couponRepository.GetCouponsAsync(cancellationToken);
+
+        if (coupons is null)
+            return Result.Failure<PaginationList<GetCouponsResponse>>(DomainErrors.Coupon.CollectionNotFound(nameof(coupons)));
 
         if (!string.IsNullOrEmpty(request.SearchCode))
         {

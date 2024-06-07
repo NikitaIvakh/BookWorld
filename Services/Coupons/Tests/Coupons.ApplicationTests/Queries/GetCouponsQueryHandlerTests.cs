@@ -71,4 +71,24 @@ public sealed class GetCouponsQueryHandlerTests
         // Assert
         _couponRepository.Verify(key => key.GetCouponsAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Fact]
+    public async Task Handle_Should_ReturnErrorWithEmptyCouponCollection()
+    {
+        // Arrange
+        var coupons = new List<Coupon>().DefaultIfEmpty();
+
+        _couponRepository.Setup(key => key.GetCouponsAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(It.IsAny<IEnumerable<Coupon>>());
+
+        var query = new GetCouponsQuery("1OFF", "couponcode", "desc", 1, 2);
+        var handler = new GetCouponsQueryHandler(_couponRepository.Object);
+
+        // Act
+        var result = await handler.Handle(query, default);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.IsSuccess.Should().BeFalse();
+    }
 }
