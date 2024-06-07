@@ -5,9 +5,9 @@ using Coupons.Domain.Shared;
 namespace Coupons.Application.Coupons.Queries.GetCoupons;
 
 public class GetCouponsQueryHandler(ICouponRepository couponRepository)
-    : IQueryHandler<GetCouponsQuery, IEnumerable<GetCouponsResponse>>
+    : IQueryHandler<GetCouponsQuery, PaginationList<GetCouponsResponse>>
 {
-    public async Task<ResultT<IEnumerable<GetCouponsResponse>>> Handle(GetCouponsQuery request, CancellationToken cancellationToken)
+    public async Task<ResultT<PaginationList<GetCouponsResponse>>> Handle(GetCouponsQuery request, CancellationToken cancellationToken)
     {
         var coupons = await couponRepository.GetCouponsAsync(cancellationToken);
 
@@ -27,8 +27,8 @@ public class GetCouponsQueryHandler(ICouponRepository couponRepository)
             key.MinAmount,
             key.CreatedDate,
             key.CouponValidityPeriod
-        ));
+        )).ToList();
 
-        return Result.Success(couponsResponse);
+        return Result.Success(await PaginationList<GetCouponsResponse>.CreateAsync(couponsResponse, request.Page, request.PageSize));
     }
 }
