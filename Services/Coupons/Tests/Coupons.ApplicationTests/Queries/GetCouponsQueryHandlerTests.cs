@@ -29,7 +29,7 @@ public sealed class GetCouponsQueryHandlerTests
 
         var coupons = new List<Coupon> { coupon1.Value, coupon2.Value };
 
-        _couponRepository.Setup(key => key.GetCouponsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(coupons);
+        _couponRepository.Setup(key => key.GetCoupons(It.IsAny<CancellationToken>())).Returns(coupons.AsQueryable());
 
         var query = new GetCouponsQuery(code1, "couponcode", "asc", 1, 2);
         var handler = new GetCouponsQueryHandler(_couponRepository.Object);
@@ -60,7 +60,7 @@ public sealed class GetCouponsQueryHandlerTests
 
         var coupons = new List<Coupon> { coupon1.Value, coupon2.Value };
 
-        _couponRepository.Setup(key => key.GetCouponsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(coupons);
+        _couponRepository.Setup(key => key.GetCoupons(It.IsAny<CancellationToken>())).Returns(coupons.AsQueryable());
 
         var query = new GetCouponsQuery(code2, "couponcode", "desc", 1, 2);
         var handler = new GetCouponsQueryHandler(_couponRepository.Object);
@@ -69,17 +69,14 @@ public sealed class GetCouponsQueryHandlerTests
         await handler.Handle(query, default);
 
         // Assert
-        _couponRepository.Verify(key => key.GetCouponsAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _couponRepository.Verify(key => key.GetCoupons(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
     public async Task Handle_Should_ReturnErrorWithEmptyCouponCollection()
     {
         // Arrange
-        var coupons = new List<Coupon>().DefaultIfEmpty();
-
-        _couponRepository.Setup(key => key.GetCouponsAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(It.IsAny<IEnumerable<Coupon>>());
+        _couponRepository.Setup(key => key.GetCoupons(It.IsAny<CancellationToken>())).Returns(It.IsAny<IQueryable<Coupon>>());
 
         var query = new GetCouponsQuery("1OFF", "couponcode", "desc", 1, 2);
         var handler = new GetCouponsQueryHandler(_couponRepository.Object);
