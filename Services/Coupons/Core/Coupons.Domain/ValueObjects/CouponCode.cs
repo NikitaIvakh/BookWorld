@@ -13,6 +13,8 @@ public sealed class CouponCode : ValueObject
 
     public string Value { get; }
 
+    public static explicit operator string(CouponCode couponCode) => couponCode.Value;
+
     public static ResultT<CouponCode> Create(string value)
     {
         if (value.IsEmpty() || value.Length is > Constraints.MAXIMUM_LENGTH or < Constraints.MINIMUM_LENGTH)

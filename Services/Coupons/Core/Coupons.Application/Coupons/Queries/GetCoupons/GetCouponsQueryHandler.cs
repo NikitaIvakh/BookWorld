@@ -13,8 +13,12 @@ public class GetCouponsQueryHandler(ICouponRepository couponRepository)
 
         if (!string.IsNullOrEmpty(request.SearchCode))
         {
-            coupons = coupons.Where(key => key.CouponCode.Value.Contains(request.SearchCode)).ToList();
+            coupons = coupons.Where(key => ((string)key.CouponCode).Contains(request.SearchCode));
         }
+
+        coupons = request.SortType?.ToLower() == "desc"
+            ? coupons.OrderByDescending(key => key.CreatedDate)
+            : coupons.OrderBy(key => key.CreatedDate);
 
         var couponsResponse = coupons.Select(key => new GetCouponsResponse
         (
