@@ -29,6 +29,7 @@ public class GetCouponsQueryHandler(ICouponRepository couponRepository)
             key.CouponValidityPeriod
         )).ToList();
 
-        return Result.Success(await PaginationList<GetCouponsResponse>.CreateAsync(couponsResponse, request.Page, request.PageSize));
+        var couponsResponsePagination = await PaginationList<GetCouponsResponse>.CreateAsync(couponsResponse, request.Page, request.PageSize);
+        return Result.Success(couponsResponsePagination);
     }
 }
