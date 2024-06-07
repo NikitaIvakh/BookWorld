@@ -12,9 +12,9 @@ namespace Coupons.API.Controllers;
 public sealed class CouponController(ISender sender) : ControllerBase
 {
     [HttpGet(nameof(GetCoupons))]
-    public async Task<IActionResult> GetCoupons(CancellationToken token)
+    public async Task<IActionResult> GetCoupons(string? searchCode, CancellationToken token)
     {
-        var coupons = new GetCouponsQuery();
+        var coupons = new GetCouponsQuery(searchCode);
         var result = await sender.Send(coupons, token);
 
         return result.IsSuccess ? Ok(result) : BadRequest($"{result.Error.Code}: {result.Error.Message}");

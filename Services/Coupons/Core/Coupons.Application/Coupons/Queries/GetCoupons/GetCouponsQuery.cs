@@ -2,4 +2,4 @@
 
 namespace Coupons.Application.Coupons.Queries.GetCoupons;
 
-public record GetCouponsQuery() : IQuery<IEnumerable<GetCouponsResponse>>;
+public record GetCouponsQuery(string? SearchCode) : IQuery<IEnumerable<GetCouponsResponse>>;
