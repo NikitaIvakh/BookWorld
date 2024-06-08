@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+﻿using Coupons.Application.Behaviors;
+using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Coupons.Application.DependencyInjection;
 
@@ -12,6 +14,8 @@ public static class DependencyInjection
 
     private static void RegisterServices(IServiceCollection services)
     {
-        services.AddMediatR(config => config.RegisterServicesFromAssemblies([Assembly.GetExecutingAssembly()]));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+        services.AddValidatorsFromAssembly(AssemblyReference.Assembly, includeInternalTypes: true);
+        services.AddMediatR(config => config.RegisterServicesFromAssemblies([AssemblyReference.Assembly]));
     }
 }
