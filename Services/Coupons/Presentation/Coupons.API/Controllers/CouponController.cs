@@ -1,4 +1,5 @@
-﻿using Coupons.Application.Coupons.Commands.Create;
+﻿using Coupons.API.Contracts;
+using Coupons.Application.Coupons.Commands.Create;
 using Coupons.Application.Coupons.Commands.Delete;
 using Coupons.Application.Coupons.Queries.GetById;
 using Coupons.Application.Coupons.Queries.GetCoupons;
@@ -30,10 +31,15 @@ public sealed class CouponController(ISender sender) : ControllerBase
     }
 
     [HttpPost(nameof(CreateCoupon))]
-    public async Task<IActionResult> CreateCoupon([FromQuery] CreateCouponCommand couponCommand, CancellationToken token)
+    public async Task<IActionResult> CreateCoupon([FromBody] CreateCouponRequest request, CancellationToken token)
     {
-        var command = new CreateCouponCommand(couponCommand.CouponCode, couponCommand.DiscountAmount,
-            couponCommand.MinAmount, couponCommand.CouponValidityPeriod);
+        var command = new CreateCouponCommand
+            (
+                request.CouponCode,
+                request.DiscountAmount,
+                request.MinAmount,
+                request.CouponValidityPeriod
+            );
 
         var result = await sender.Send(command, token);
         return result.IsSuccess ? Ok(result.Value) : BadRequest($"{result.Error.Code}: {result.Error.Message}");
