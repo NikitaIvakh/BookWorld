@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Coupons.Infrastructure\Coupons.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Coupons.Persistence\Coupons.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

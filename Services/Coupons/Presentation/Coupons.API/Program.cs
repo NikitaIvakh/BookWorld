@@ -1,5 +1,6 @@
 using Coupons.Application.DependencyInjection;
 using Coupons.Infrastructure.DependencyInjection;
+using Coupons.Persistence.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureApplicationServices();
+builder.Services.ConfigurePersistenceServices();
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();

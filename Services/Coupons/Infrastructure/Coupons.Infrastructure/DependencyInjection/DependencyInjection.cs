@@ -26,6 +26,7 @@ public static class DependencyInjection
     private static void AddInterceptors(IServiceCollection services)
     {
         services.AddScoped<CouponAddCreateDateInterceptor>();
+        services.AddScoped<ConvertDomainEventToOutboxMessageInterceptor>();
     }
 
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
