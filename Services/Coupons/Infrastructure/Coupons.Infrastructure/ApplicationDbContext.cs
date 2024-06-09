@@ -8,6 +8,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<Coupon> Coupons { get; private init; }
 
+    public DbSet<OutboxMessage> OutboxMessages { get; private set; }
+
+    public DbSet<OutboxMessageConsumer> OutboxMessagesConsumer { get; private set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
