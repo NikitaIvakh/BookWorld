@@ -5,7 +5,7 @@ using Coupons.Domain.ValueObjects;
 
 namespace Coupons.Domain.Entities;
 
-public sealed class Coupon : Entity, IAuditableEntity
+public sealed class Coupon : AggregateRoot, IAuditableEntity
 {
     private Coupon()
     {
