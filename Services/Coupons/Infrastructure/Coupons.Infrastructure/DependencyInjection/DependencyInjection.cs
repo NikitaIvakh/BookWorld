@@ -33,7 +33,8 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             var couponCreateDateInterceptor = sp.GetService<CouponAddCreateDateInterceptor>();
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")).AddInterceptors(couponCreateDateInterceptor!);
+            var convertDomainEventToOutboxMessageInterceptor = sp.GetService<ConvertDomainEventToOutboxMessageInterceptor>();
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")).AddInterceptors(couponCreateDateInterceptor!, convertDomainEventToOutboxMessageInterceptor!);
         });
     }
 
