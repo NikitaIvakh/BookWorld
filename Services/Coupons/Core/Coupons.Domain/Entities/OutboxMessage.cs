@@ -12,5 +12,5 @@ public sealed class OutboxMessage
 
     public DateTime? ProcessedOnUtc { get; set; }
 
-    public string Error = string.Empty;
+    public string? Error { get; set; }
 }

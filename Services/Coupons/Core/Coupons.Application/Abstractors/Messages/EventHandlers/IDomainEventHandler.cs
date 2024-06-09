@@ -3,4 +3,7 @@ using MediatR;
 
 namespace Coupons.Application.Abstractors.Messages.EventHandlers;
 
-public interface IDomainEventHandler<in TEvent> : INotificationHandler<TEvent> where TEvent : IDomainEvent;
+public interface IDomainEventHandler<in TEvent> : INotificationHandler<TEvent> where TEvent : IDomainEvent
+{
+
+}

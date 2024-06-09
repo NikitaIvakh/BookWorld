@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Coupons.Domain.Primitives;
+using Coupons.Persistence.BackgroundJobs;
+using Coupons.Persistence.Idempotent;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Quartz;
+using Quartz.Simpl;
 using Scrutor;
 
 namespace Coupons.Persistence.DependencyInjection;
@@ -20,10 +26,22 @@ public static class DependencyInjection
             .AsImplementedInterfaces()
             .WithScopedLifetime()
         );
+
+        services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
     }
 
     private static void RegisterQuartz(IServiceCollection services)
     {
+        services.AddQuartz(configure =>
+        {
+            var jobKey = new JobKey(nameof(ProcessedOnUtcOutboxMessageJob));
 
+            configure.AddJob<ProcessedOnUtcOutboxMessageJob>(jobKey)
+                .AddTrigger(trigger => trigger.ForJob(jobKey).WithSimpleSchedule(scedule => scedule.WithIntervalInSeconds(10).RepeatForever()));
+
+            configure.UseJobFactory<MicrosoftDependencyInjectionJobFactory>();
+        });
+
+        services.AddQuartzHostedService();
     }
 }

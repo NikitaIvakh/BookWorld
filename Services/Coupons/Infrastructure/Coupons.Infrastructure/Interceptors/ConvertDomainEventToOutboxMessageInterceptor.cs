@@ -30,7 +30,7 @@ public sealed class ConvertDomainEventToOutboxMessageInterceptor : SaveChangesIn
                     TypeNameHandling = TypeNameHandling.All
                 }),
                 OccurredOnUtc = DateTime.UtcNow,
-            });
+            }).ToList();
 
         context.Set<OutboxMessage>().AddRange(outboxMessage);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
