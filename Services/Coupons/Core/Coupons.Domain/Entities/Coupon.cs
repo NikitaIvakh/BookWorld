@@ -1,4 +1,5 @@
 ﻿using Coupons.Domain.Common;
+using Coupons.Domain.DomainEvents;
 using Coupons.Domain.Primitives;
 using Coupons.Domain.Shared;
 using Coupons.Domain.ValueObjects;
@@ -44,6 +45,7 @@ public sealed class Coupon : AggregateRoot, IAuditableEntity
             return Result.Failure<Coupon>(DomainErrors.Coupon.InvalidDateTime(nameof(couponValidityPeriod)));
 
         var coupon = new Coupon(id, couponCode, discountAmount, minAmount, couponValidityPeriod);
+        coupon.RaiseDomainEvent(new CreateCouponRaiseDomainEvent(Guid.NewGuid(), coupon.Id));
         return Result.Create(coupon);
     }
 }
