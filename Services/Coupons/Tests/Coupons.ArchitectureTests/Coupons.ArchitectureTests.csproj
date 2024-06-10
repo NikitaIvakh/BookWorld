@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\Core\Coupons.Domain\Coupons.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Coupons.Infrastructure\Coupons.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Coupons.Persistence\Coupons.Persistence.csproj" />
+    <ProjectReference Include="..\..\Presentation\Coupons.API\Coupons.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

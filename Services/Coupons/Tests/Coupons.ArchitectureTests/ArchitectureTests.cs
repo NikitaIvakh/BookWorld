@@ -84,4 +84,30 @@ public sealed class ArchitectureTests
         // Assert
         testResult.IsSuccessful.Should().BeTrue();
     }
+
+    [Fact]
+    public void Handlers_Should_DependencyOnDomain()
+    {
+        // Arrange
+        var assembly = typeof(Application.DependencyInjection.AssemblyReference).Assembly;
+
+        // Act
+        var testResult = Types.InAssembly(assembly).That().HaveNameEndingWith("Handler").Should().HaveDependencyOn(DomainNamespace).GetResult();
+
+        // Assert
+        testResult.IsSuccessful.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Controllers_Should_HaveDependencyOnMediatR()
+    {
+        // Arrange
+        var assembly = typeof(API.AssemblyReferences.AssemblyReference).Assembly;
+
+        // Act
+        var testResults = Types.InAssembly(assembly).That().HaveNameEndingWith("Controller").Should().HaveDependencyOn("MediatR").GetResult();
+
+        // Assert
+        testResults.IsSuccessful.Should().BeTrue();
+    }
 }
