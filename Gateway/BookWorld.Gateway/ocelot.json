@@ -12,6 +12,45 @@
       ],
       "UpstreamPathTemplate": "/api/Coupon/GetCoupons",
       "UpstreamHttpMethod": [ "GET" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/Coupon/GetCoupon/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7069
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Coupon/GetCoupon/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/Coupon/CreateCoupon",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7069
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Coupon/CreateCoupon",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/Coupon/DeleteCoupon/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7069
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Coupon/DeleteCoupon/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ]
     }
   ],
 
