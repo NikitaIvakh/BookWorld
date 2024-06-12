@@ -1,6 +1,11 @@
+using BookWorld.Frontend;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
